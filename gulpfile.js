@@ -8,8 +8,9 @@ var $gulpRev = require('gulp-rev');
 var $gulpMd5 = require('gulp-md5');
 var $gulpMocha = require('gulp-mocha');
 var $runSequence = require('run-sequence');
+var $gulpReplace = require('gulp-replace');
 
-var $replaceMd5 = require('./index');
+var $md5Replacement = require('./index');
 
 $gulp.task('clean', function(callback){
 	$del('./test/dist/');
@@ -59,19 +60,19 @@ $gulp.task('copy', function(){
 });
 
 $gulp.task('basic', function(){
+	var robj = $md5Replacement(
+
+	);
+
 	$gulp.src([
 		'html/**/*.html'
 	], {
 		cwd: 'test/src',
 		base: 'test/src'
 	}).pipe(
-		$replaceMd5({
-			globs : [
-				'**/*.css',
-				'**/*.js'
-			],
-			cwd : 'test/dist'
-		})
+		$gulpReplace(robj.search, robj.replacement)
+	).pipe(
+		$gulp.dest('./test/dist')
 	);
 });
 
