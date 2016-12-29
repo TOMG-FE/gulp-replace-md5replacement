@@ -8,7 +8,7 @@ var $gulp = require('gulp');
 var $gulpReplace = require('gulp-replace');
 var $md5Replacement = require('gulp-replace-md5replacement');
 
-$gulp.task('basic-js', function(){
+$gulp.task('md5', function(){
 	var robj = $md5Replacement({
 		name: 'js/\\w+',
 		split: '_',
