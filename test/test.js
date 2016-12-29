@@ -47,24 +47,58 @@ function getHtmlMd5(path){
 	return md5;
 }
 
+function getHtmlPath(regStr){
+	var reg = new RegExp(regStr, 'mgi');
+	var str = '';
+
+	htmlFiles.forEach(function(file){
+		var filePath = $path.join('./test/dist', file);
+		var content = $fs.readFileSync(filePath, 'utf8');
+		var match = content.match(reg);
+		if(match){
+			str = match[0];
+		}
+	});
+
+	return str;
+}
+
 // 获取对应 src 目录文件的 md5 值
 function getFileMd5(path){
 	return md5map[path] || '';
 }
 
-describe('basic', function() {
+describe('basic-css', function() {
 
 	it('should replace css md5', function() {
 		var distMd5 = getFileMd5('css/1.css');
-		var htmlMd5 = getHtmlMd5('css/1{hash}.css');
+		var htmlMd5 = getHtmlMd5('../css/1{hash}.css');
 		$chai.expect(distMd5).to.equal(htmlMd5);
 	});
 
 	it('should replace js md5', function() {
 		var distMd5 = getFileMd5('js/1.js');
-		var htmlMd5 = getHtmlMd5('js/1{hash}.js');
+		var htmlMd5 = getHtmlMd5('../js/1{hash}.js');
 		$chai.expect(distMd5).to.equal(htmlMd5);
 	});
 
 });
 
+describe('unReplace', function() {
+
+	it('will not replace not matched css md5', function() {
+		var path = getHtmlPath('unreplace/css/1-\\w+.css');
+		$chai.expect(path).to.equal('unreplace/css/1-12345678.css');
+	});
+
+});
+
+describe('cdnReplace', function() {
+
+	it('should replace cdn css md5', function() {
+		var distMd5 = getFileMd5('css/1.css');
+		var htmlMd5 = getHtmlMd5('cdn/css/1{hash}.css');
+		$chai.expect(distMd5).to.equal(htmlMd5);
+	});
+
+});

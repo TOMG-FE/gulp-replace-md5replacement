@@ -4,7 +4,7 @@ var $path = require('path');
 var $gulpUtil = require('gulp-util');
 var $walkSync = require('walk-sync');
 
-var DEVELOPMENT = false;
+var DEVELOPMENT = true;
 
 function substitute(str, obj, reg){
 	return str.replace(reg || (/\\?\{\{([^{}]+)\}\}/g), function(match, name){
@@ -74,11 +74,16 @@ function md5Replacement(options) {
 	}, {});
 
 	// get htmlMatch
-	var htmlMatch = substitute(conf.template, {
-		name: '(' + conf.name + ')',
-		split: '(' + conf.split + ')',
-		hash: '(' + conf.hash + ')'
-	});
+	var htmlMatch = substitute(
+		conf.template.replace(
+			/\./g, '\\.'
+		),
+		{
+			name: '(' + conf.name + ')',
+			split: '(' + conf.split + ')',
+			hash: '(' + conf.hash + ')'
+		}
+	);
 
 	function getMd5(name){
 		return md5Map[name] || '';

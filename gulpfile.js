@@ -113,6 +113,30 @@ $gulp.task('mocha', function() {
 	);
 });
 
+$gulp.task('cdn-css', function(){
+	var robj = $md5Replacement({
+		name: 'css/\\w+',
+		split: '-',
+		hash: '\\w+',
+		template: 'cdn/{{name}}{{split}}{{hash}}.css',
+		cwd: './test/dist',
+		globs: [
+			'**/*.css'
+		]
+	});
+
+	return $gulp.src([
+		'html/**/*.html'
+	], {
+		cwd: 'test/dist',
+		base: 'test/dist'
+	}).pipe(
+		$gulpReplace(robj.search, robj.replacement)
+	).pipe(
+		$gulp.dest('./test/dist')
+	);
+});
+
 $gulp.task('prepare', function(){
 	return $runSequence(
 		'clean',
@@ -126,6 +150,7 @@ $gulp.task('test', function(){
 		'copy',
 		'basic-css',
 		'basic-js',
+		'cdn-css',
 		'mocha'
 	);
 });
