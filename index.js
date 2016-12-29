@@ -4,8 +4,6 @@ var $path = require('path');
 var $gulpUtil = require('gulp-util');
 var $walkSync = require('walk-sync');
 
-var DEVELOPMENT = true;
-
 function substitute(str, obj, reg){
 	return str.replace(reg || (/\\?\{\{([^{}]+)\}\}/g), function(match, name){
 		if (match.charAt(0) === '\\'){
@@ -21,6 +19,8 @@ function md5Replacement(options) {
 	options = typeof(options) === 'object' ? options : {};
 
 	var conf = {
+		debug: false,
+
 		// 文件名子匹配正则字符串
 		name: 'css/\\w+',
 
@@ -54,7 +54,7 @@ function md5Replacement(options) {
 		globs: conf.globs
 	});
 
-	if(DEVELOPMENT){
+	if(conf.debug){
 		console.log('files:', files);
 	}
 
@@ -96,13 +96,13 @@ function md5Replacement(options) {
 		);
 	}
 
-	if(DEVELOPMENT){
+	if(conf.debug){
 		console.log('htmlMatch:', htmlMatch);
 	}
 
 	search = new RegExp(htmlMatch, 'mg');
 	replacement = function(match, name, split, hash){
-		if(DEVELOPMENT){
+		if(conf.debug){
 			console.log('match:', match);
 		}
 
@@ -116,7 +116,7 @@ function md5Replacement(options) {
 			});
 		}
 
-		if(DEVELOPMENT){
+		if(conf.debug){
 			console.log('md5:', md5);
 			console.log('replaced:', replaced);
 		}
