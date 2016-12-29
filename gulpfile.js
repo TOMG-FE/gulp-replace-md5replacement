@@ -48,8 +48,8 @@ $gulp.task('rev', function(){
 	);
 });
 
-$gulp.task('copy', function(){
-	$gulp.src([
+$gulp.task('copy', function(done){
+	return $gulp.src([
 		'html/**/*.html'
 	], {
 		cwd: 'test/src',
@@ -59,16 +59,47 @@ $gulp.task('copy', function(){
 	);
 });
 
-$gulp.task('basic', function(){
-	var robj = $md5Replacement(
+$gulp.task('basic-css', function(){
+	var robj = $md5Replacement({
+		name: 'css/\\w+',
+		split: '-',
+		hash: '\\w+',
+		template: '../{{name}}{{split}}{{hash}}.css',
+		cwd: './test/dist',
+		globs: [
+			'**/*.css'
+		]
+	});
 
-	);
-
-	$gulp.src([
+	return $gulp.src([
 		'html/**/*.html'
 	], {
-		cwd: 'test/src',
-		base: 'test/src'
+		cwd: 'test/dist',
+		base: 'test/dist'
+	}).pipe(
+		$gulpReplace(robj.search, robj.replacement)
+	).pipe(
+		$gulp.dest('./test/dist')
+	);
+});
+
+$gulp.task('basic-js', function(){
+	var robj = $md5Replacement({
+		name: 'js/\\w+',
+		split: '_',
+		hash: '\\w+',
+		template: '../{{name}}{{split}}{{hash}}.js',
+		cwd: './test/dist',
+		globs: [
+			'**/*.js'
+		]
+	});
+
+	return $gulp.src([
+		'html/**/*.html'
+	], {
+		cwd: 'test/dist',
+		base: 'test/dist'
 	}).pipe(
 		$gulpReplace(robj.search, robj.replacement)
 	).pipe(
@@ -92,7 +123,9 @@ $gulp.task('prepare', function(){
 
 $gulp.task('test', function(){
 	return $runSequence(
-		'basic',
+		'copy',
+		'basic-css',
+		'basic-js',
 		'mocha'
 	);
 });
