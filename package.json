@@ -1,0 +1,33 @@
+{
+  "name": "gulp-md5name-replace",
+  "version": "0.0.1",
+  "description": "replace md5 filename",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TOMG-FE/gulp-md5name-replace.git"
+  },
+  "author": "TabSpace",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/TOMG-FE/gulp-md5name-replace/issues"
+  },
+  "homepage": "https://github.com/TOMG-FE/gulp-md5name-replace#readme",
+  "dependencies": {
+    "gulp-util": "^3.0.8",
+    "through2": "^2.0.3",
+    "walk-sync": "^0.3.1"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "del": "^2.2.2",
+    "gulp": "^3.9.1",
+    "gulp-md5": "^0.1.2",
+    "gulp-mocha": "^3.0.1",
+    "gulp-rev": "^7.1.2",
+    "run-sequence": "^1.2.2"
+  }
+}
