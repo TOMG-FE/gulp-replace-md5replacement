@@ -1,11 +1,16 @@
 {
   "name": "gulp-replace-md5replacement",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "provide gulp-replace md5 filename replacement",
   "main": "index.js",
   "scripts": {
     "test": "gulp"
   },
+  "files": [
+    "index.js",
+    "README.md",
+    "LICENSE"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/TOMG-FE/gulp-replace-md5replacement.git"
