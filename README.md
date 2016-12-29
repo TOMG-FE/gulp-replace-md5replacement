@@ -10,13 +10,13 @@ var $md5Replacement = require('gulp-replace-md5replacement');
 
 $gulp.task('md5', function(){
 	var robj = $md5Replacement({
-		name: 'js/\\w+',
-		split: '_',
+		name: 'css/\\w+',
+		split: '-',
 		hash: '\\w+',
-		template: '../{{name}}{{split}}{{hash}}.js',
+		template: '../{{name}}{{split}}{{hash}}.css',
 		cwd: './test/dist',
 		globs: [
-			'**/*.js'
+			'**/*.css'
 		]
 	});
 
