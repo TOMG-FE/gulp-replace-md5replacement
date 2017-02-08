@@ -1,22 +1,19 @@
-var $fs = require('fs');
-var $path = require('path');
-
 var $gulpUtil = require('gulp-util');
 var $walkSync = require('walk-sync');
 
-function substitute(str, obj, reg){
-	return str.replace(reg || (/\\?\{\{([^{}]+)\}\}/g), function(match, name){
-		if (match.charAt(0) === '\\'){
+function substitute(str, obj, reg) {
+	return str.replace(reg || (/\\?\{\{([^{}]+)\}\}/g), function(match, name) {
+		if (match.charAt(0) === '\\') {
 			return match.slice(1);
 		}
-		//注意：obj[name] != null 等同于 obj[name] !== null && obj[name] !== undefined
+		// 注意：obj[name] != null 等同于 obj[name] !== null && obj[name] !== undefined
 		return (obj[name] != null) ? obj[name] : '';
 	});
 }
 
 function md5Replacement(options) {
 
-	options = typeof(options) === 'object' ? options : {};
+	options = typeof options === 'object' ? options : {};
 
 	var conf = {
 		debug: false,
@@ -54,7 +51,7 @@ function md5Replacement(options) {
 		globs: conf.globs
 	});
 
-	if(conf.debug){
+	if (conf.debug) {
 		console.log('files:', files);
 	}
 
@@ -66,8 +63,8 @@ function md5Replacement(options) {
 	});
 
 	var fileReg = new RegExp(fileMatch);
-	var md5Map = files.reduce(function(map, file){
-		file.replace(fileReg, function(match, name, md5){
+	var md5Map = files.reduce(function(map, file) {
+		file.replace(fileReg, function(match, name, md5) {
 			map[name] = md5;
 		});
 		return map;
@@ -77,38 +74,37 @@ function md5Replacement(options) {
 	var htmlMatch = substitute(
 		conf.template.replace(
 			/\./g, '\\.'
-		),
-		{
+		), {
 			name: '(' + conf.name + ')',
 			split: '(' + conf.split + ')',
 			hash: '(' + conf.hash + ')'
 		}
 	);
 
-	function getMd5(name){
+	function getMd5(name) {
 		return md5Map[name] || '';
 	}
 
-	function setMd5Color(str, md5, color){
+	function setMd5Color(str, md5, color) {
 		return str.replace(
 			new RegExp(md5),
 			$gulpUtil.colors[color](md5)
 		);
 	}
 
-	if(conf.debug){
+	if (conf.debug) {
 		console.log('htmlMatch:', htmlMatch);
 	}
 
 	search = new RegExp(htmlMatch, 'mg');
-	replacement = function(match, name, split, hash){
-		if(conf.debug){
+	replacement = function(match, name, split, hash) {
+		if (conf.debug) {
 			console.log('match:', match);
 		}
 
 		var replaced = match;
 		var md5 = getMd5(name);
-		if(md5){
+		if (md5) {
 			replaced = substitute(conf.template, {
 				name: name,
 				split: split,
@@ -116,12 +112,12 @@ function md5Replacement(options) {
 			});
 		}
 
-		if(conf.debug){
+		if (conf.debug) {
 			console.log('md5:', md5);
 			console.log('replaced:', replaced);
 		}
 
-		if(match !== replaced){
+		if (match !== replaced) {
 			$gulpUtil.log(
 				$gulpUtil.colors.yellow('Update md5:'),
 				setMd5Color(replaced, md5, 'green')
@@ -139,3 +135,4 @@ function md5Replacement(options) {
 }
 
 module.exports = md5Replacement;
+
