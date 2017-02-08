@@ -139,8 +139,9 @@ $gulp.task('cdn-css', function() {
 $gulp.task('tpl-css', function() {
 	var robj = $md5Replacement({
 		name: 'css/\\w+',
-		split: '-*',
+		split: '-',
 		hash: '\\w*',
+		append: true,
 		template: '../tpl/{{name}}{{split}}{{hash}}.css',
 		cwd: './test/dist',
 		globs: [

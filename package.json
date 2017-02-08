@@ -1,6 +1,6 @@
 {
   "name": "gulp-replace-md5replacement",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "provide gulp-replace md5 filename replacement",
   "main": "index.js",
   "scripts": {

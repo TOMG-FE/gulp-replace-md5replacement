@@ -27,6 +27,9 @@ function md5Replacement(options) {
 		// md5子匹配正则字符串
 		hash: '\\w+',
 
+		// 是否追加 md5，会对没有加 md5 的静态链接添加对应的 md5 后缀
+		append: false,
+
 		// html文件路径匹配模板
 		template: '../{{name}}{{split}}{{hash}}.css',
 
@@ -71,15 +74,27 @@ function md5Replacement(options) {
 	}, {});
 
 	// get htmlMatch
-	var htmlMatch = substitute(
-		conf.template.replace(
-			/\./g, '\\.'
-		), {
-			name: '(' + conf.name + ')',
-			split: '(' + conf.split + ')',
-			hash: '(' + conf.hash + ')'
-		}
-	);
+	var htmlMatch;
+
+	if (!conf.append) {
+		htmlMatch = substitute(
+			conf.template.replace(
+				/\./g, '\\.'
+			), {
+				name: '(' + conf.name + ')',
+				split: '(' + conf.split + ')',
+				hash: '(' + conf.hash + ')'
+			}
+		);
+	} else {
+		htmlMatch = substitute(
+			conf.template.replace(
+				/\./g, '\\.'
+			), {
+				name: '(' + conf.name + ')'
+			}
+		);
+	}
 
 	function getMd5(name) {
 		return md5Map[name] || '';
@@ -107,7 +122,7 @@ function md5Replacement(options) {
 		if (md5) {
 			replaced = substitute(conf.template, {
 				name: name,
-				split: split,
+				split: conf.split,
 				hash: md5
 			});
 		}
