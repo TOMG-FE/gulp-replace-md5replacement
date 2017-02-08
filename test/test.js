@@ -106,3 +106,14 @@ describe('cdnReplace', function() {
 
 });
 
+describe('tplReplace', function() {
+
+	it('should replace tpl css md5', function() {
+		var distMd5 = getFileMd5('css/2.css');
+		var htmlMd5 = getHtmlMd5('tpl/css/2{hash}.css');
+		$chai.expect(distMd5).to.equal(htmlMd5);
+	});
+
+});
+
+

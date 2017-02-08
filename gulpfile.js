@@ -18,6 +18,7 @@ $gulp.task('clean', function(callback) {
 $gulp.task('updateFile', function() {
 	$fs.writeFileSync('./test/src/js/1.js', Math.random());
 	$fs.writeFileSync('./test/src/css/1.css', Math.random());
+	$fs.writeFileSync('./test/src/css/2.css', Math.random());
 });
 
 $gulp.task('rev', function() {
@@ -135,6 +136,30 @@ $gulp.task('cdn-css', function() {
 	);
 });
 
+$gulp.task('tpl-css', function() {
+	var robj = $md5Replacement({
+		name: 'css/\\w+',
+		split: '-*',
+		hash: '\\w*',
+		template: '../{{name}}{{split}}{{hash}}.css',
+		cwd: './test/dist',
+		globs: [
+			'**/*.css'
+		]
+	});
+
+	return $gulp.src([
+		'tpl/**/*.html'
+	], {
+		cwd: 'test/src',
+		base: 'test/src'
+	}).pipe(
+		$gulpReplace(robj.search, robj.replacement)
+	).pipe(
+		$gulp.dest('./test/dist')
+	);
+});
+
 $gulp.task('prepare', function() {
 	return $runSequence(
 		'clean',
@@ -149,6 +174,7 @@ $gulp.task('test', function() {
 		'basic-css',
 		'basic-js',
 		'cdn-css',
+		'tpl-css',
 		'mocha'
 	);
 });
