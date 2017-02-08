@@ -141,7 +141,7 @@ $gulp.task('tpl-css', function() {
 		name: 'css/\\w+',
 		split: '-*',
 		hash: '\\w*',
-		template: '../{{name}}{{split}}{{hash}}.css',
+		template: '../tpl/{{name}}{{split}}{{hash}}.css',
 		cwd: './test/dist',
 		globs: [
 			'**/*.css'
